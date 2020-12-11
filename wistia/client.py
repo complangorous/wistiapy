@@ -142,6 +142,32 @@ class WistiaClient:
     # https://wistia.com/support/developers/data-api#customizations_update
     # https://wistia.com/support/developers/data-api#customizations_delete
 
+    # Events
+
+    def list_events(self,
+        media_id=None,
+        page=1,
+        per_page=100,
+        start_date=None,
+        end_date=None
+    ) -> Iterable[Event]:
+        params = {
+            "start_date": start_date,
+            "end_date": end_date,
+            "page": page,
+            "per_page": per_page,
+        }
+        if start_date:
+            params["start_date"] = start_date
+        if end_date:
+            params["end_date"] = end_date
+
+        events_list = self.get("stats/events.json", params=params)
+
+        return [
+            Event(event_data, strict=False) for event_data in events_list
+        ]
+
     # Captions
 
     def list_captions(self, wistia_hashed_id: str) -> Iterable[CaptionTrack]:
