@@ -3,7 +3,7 @@ from itertools import count
 from typing import Iterable
 
 import requests
-from wistia.schema import Media, Project, CaptionTrack
+from wistia.schema import Media, Project, Event, CaptionTrack
 
 log = logging.getLogger("wistiapy")
 
@@ -143,7 +143,6 @@ class WistiaClient:
     # https://wistia.com/support/developers/data-api#customizations_delete
 
     # Events
-
     def list_events(self,
         media_id=None,
         page=1,
@@ -169,7 +168,6 @@ class WistiaClient:
         ]
 
     # Captions
-
     def list_captions(self, wistia_hashed_id: str) -> Iterable[CaptionTrack]:
         rel_path = f"medias/{wistia_hashed_id}/captions.json"
         caption_list = self.get(rel_path)

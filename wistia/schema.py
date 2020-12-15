@@ -197,90 +197,6 @@ class Media(models.Model):
     # Undocumented "transcript" field
     # transcript = types.DictType(required=False)
 
-
-class Project(models.Model):
-    """Wrapper for project results."""
-
-    id = types.IntType(
-        required=True,
-        metadata=dict(
-            description="A unique numeric identifier for the project within the system."
-        ),
-    )
-    name = types.StringType(
-        required=True, metadata=dict(description="The project's display name.")
-    )
-    hashed_id = types.StringType(
-        required=True,
-        metadata=dict(
-            description=(
-                "A private hashed id, uniquely identifying the project within the"
-                "system. Used for playlists and RSS feeds"
-            )
-        ),
-    )
-    media_count = types.IntType(
-        required=True,
-        default=0,
-        serialized_name="mediaCount",
-        metadata=dict(
-            description="The number of different medias that have been uploaded to the project."
-        ),
-    )
-    created = types.DateTimeType(
-        required=True,
-        serialized_format=DATETIME_FORMAT,
-        metadata=dict(description="The date that the project was originally created."),
-    )
-    updated = types.DateTimeType(
-        required=True,
-        serialized_format=DATETIME_FORMAT,
-        metadata=dict(description="The date that the project was last updated"),
-    )
-    anonymous_can_upload = types.BooleanType(
-        required=True,
-        serialized_name="anonymousCanUpload",
-        metadata=dict(
-            description=(
-                "A boolean indicating whether or not anonymous uploads are enabled for the project"
-            )
-        ),
-    )
-    anonymous_can_download = types.BooleanType(
-        required=True,
-        serialized_name="anonymousCanDownload",
-        metadata=dict(
-            description=(
-                "A boolean indicating whether or not anonymous downloads are enabled for this project"
-            )
-        ),
-    )
-    public = types.BooleanType(
-        required=True,
-        metadata=dict(
-            description=(
-                "A boolean indicating whether the project is available for public (anonymous) viewing"
-            )
-        ),
-    )
-    public_id = types.StringType(
-        required=False,
-        serialized_name="publicId",
-        metadata=dict(
-            description=(
-                "If the project is public, this field contains a string representing the "
-                "ID used for referencing the project in public URLs"
-            )
-        ),
-    )
-    medias = types.ListType(
-        types.ModelType(Media),
-        required=False,  # Not present in lists of Projects
-        serialize_when_none=False,
-        metadata=dict(description="A list of the media associated with a project"),
-    )
-
-
 class Event(models.Model):
     received_at = types.DateTimeType(
         required=True,
@@ -290,19 +206,19 @@ class Event(models.Model):
 
     event_key = types.StringType(
         required=True,
-        serialize_when_none=False,
+        serialize_when_none=True,
         metadata=dict(description="The ID for that event.")
     )
 
     visitor_key = types.StringType(
         required=True,
-        serialize_when_none=False,
+        serialize_when_none=True,
         metadata=dict(description="The id of the visitor, which can be used to"
                                 "retrieve further information about them.")
     )
 
     embed_url = types.StringType(
-        required=False,
+        required=True,
         serialize_when_none=False,
         metadata=dict(description="The URL of the page where the video was used.")
     )
